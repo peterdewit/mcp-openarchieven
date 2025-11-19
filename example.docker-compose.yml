@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+
+  mcp-openarchieven:
+    container_name: mcp-openarchieven
+    image: mcp-openarchieven:latest   # use your built image
+    restart: unless-stopped
+
+    # MCP server runs on port 8010 inside the container
+    ports:
+      - "8010:8010"
+
+    # Persistent storage for server files (optional, but preferred)
+    volumes:
+      - /host/path/app:/app
+
+    # Optional environment variables
+    environment:
+      # Increase logging if desired
+      UVICORN_LOG_LEVEL: info
+
+    # Run the server exactly as in your standalone setup
+    command: >
+      uvicorn openarchieven_server:app
+      --host 0.0.0.0
+      --port 8010
+
